@@ -2,7 +2,9 @@
 
 奶蛙博物馆的全站复现与单文件离线版本，覆盖主馆和五个分馆。保留公开站点的布局、馆藏、图片、音乐和游戏交互，将登录、云端账户与付费生成流程改为本机体验。
 
-**完整版下载：** [GitHub Releases](https://github.com/wangchuanao2008/milk-frog-museum/releases/latest)。下载其中的 `milk-frog-museum-offline.html`，用现代浏览器打开即可，无需安装程序、启动服务器、登录或联网。仓库中的 `奶蛙博物馆.html` 是体积较小的版本，媒体仍需联网；它与完整版的使用条件不同。
+**仓库提供源码与联网媒体版：** 下载 [奶蛙博物馆.html.gz](奶蛙博物馆.html.gz)，解压得到约 5 MB 的 `奶蛙博物馆.html`，用浏览器打开。主馆和五个分馆的代码都已内嵌，无需登录，但图片、音视频和字体仍需要联网。具体来源见下方“联网资源来自哪里”和 [资源来源说明](docs/RESOURCE_SOURCES.md)。
+
+582 MB 的完整离线 HTML 已在本机生成并验证，按项目发布要求**没有上传到 GitHub，也没有发布离线版 Release**。仓库保留离线打包工具、资源清单与验证记录，便于研究和自行构建。
 
 ![主馆](docs/images/museum.png)
 
@@ -21,13 +23,31 @@
 
 ## 下载与使用
 
-1. 进入 [Releases](https://github.com/wangchuanao2008/milk-frog-museum/releases)，下载完整 HTML 附件。
-2. 保存到设备本地，用支持 JavaScript、WebGL、Blob URL、Canvas 和音视频解码的现代浏览器打开。
+1. 下载仓库中的 `奶蛙博物馆.html.gz`，使用解压软件得到 `奶蛙博物馆.html`；或者按后文步骤从源码构建。
+2. 在联网状态下，用支持 JavaScript、WebGL、Canvas 和音视频解码的现代浏览器打开 HTML，无需服务器或账号。
 3. 主馆的“分馆”入口会在同一个文件中打开对应应用；顶部“返回博物馆”返回主馆。
 
-完整版为 **581,921,168 字节，约 582 MB / 555 MiB**。图片保留原尺寸，音视频保留原文件，因此首次打开需要解析较大的 HTML 并解码资源。手机尺寸已在 Chromium 中验证，不能据此保证所有真机、系统文件预览器、老旧浏览器或低内存设备兼容。某些手机文件预览器不执行网页脚本，应使用真正的浏览器。
+`.gz` 是传输压缩，不是另一个网站版本；解压前后 HTML 内容保持一致。部分预打包页面也以 gzip 快照保存，构建器会自动读取。这使 GitHub 上传和源码分发更轻量。
+
+本机已验证的离线构建为 **581,921,168 字节，约 582 MB / 555 MiB**。图片保留原尺寸，音视频保留原文件，因此首次打开需要解析较大的 HTML 并解码资源。手机尺寸已在 Chromium 中验证，不能据此保证所有真机、系统文件预览器、老旧浏览器或低内存设备兼容。某些手机文件预览器不执行网页脚本，应使用真正的浏览器。
 
 身份、收藏、评论和存档保存在当前浏览器本机；它们不会跨设备同步。更换浏览器、清理网站数据、使用无痕模式或改变文件位置，可能影响本机状态的持续保存。意见箱将内容导出为 JSON，未发送邮件。媒体声音可能需要首次点击才能播放，这是浏览器的自动播放策略。
+
+## 联网资源来自哪里
+
+联网媒体版不会使用 GitHub 作为媒体服务器。它沿用原站公开发布物中的版本化资源 URL：
+
+| 来源域名 | 内容 | 在项目中的用途 |
+| --- | --- | --- |
+| `router-files.neta.art/files/…` | Neta 托管的作品图片、首页 / 手机入口视频和部分角色参考图 | 主馆馆藏、封面、档案及入口影像 |
+| `works.cohub.live/w/…/content/assets/…` | 各个作品版本目录下的图片、艺术家和原作参考图、游戏纹理、模板、音乐及字体 | 主馆与 3D 展馆、小镇、尖塔、制造所的素材 |
+| `public.cohub.live/p/…/milkfrog-assets/…` | 制造所公开的头像部件库，包含表情、发型、眼镜、服装与装饰等 | Canvas 图层合成与编辑预览 |
+| `fonts.googleapis.com` / `fonts.gstatic.com` | Google Fonts 样式和字体分片 | 主馆、3D 展馆和尖塔的中西文字体 |
+| 页面内嵌 Base64 / Web Audio | 幸存者已内嵌的背景音乐和笑声，以及代码合成音效 | 不依赖外部媒体 URL 的游戏声音 |
+
+这些地址来自原站公开版本，不是本项目新增的上传服务。作品外层位于 `neta.art`，实际媒体由以上 CDN 提供；本项目保留来源标识和资源清单。项目没有购买或控制这些 CDN，原站若删除文件、改变访问规则、出现防盗链 / CORS 限制或网络故障，联网版可能加载失败。
+
+[资源来源说明](docs/RESOURCE_SOURCES.md)列出具体版本目录、字体族和如何逐项追溯。主馆的 [149 件馆藏清单](analysis/evidence/catalog-inventory.json)、[媒体清单](offline/manifest.json)、[字体清单](offline/fonts.json)和制造所的 [部件映射](reconstruction/factory/assets.json)保留了完整地址。**完整离线构建解决这些运行端联网依赖；本次公开仓库不包含它的 582 MB 成品。**
 
 ## 整体技术架构
 
@@ -35,18 +55,18 @@
 
 ```mermaid
 flowchart TD
-  A[单个离线 HTML] --> B[主馆 DOM / CSS / JavaScript]
-  A --> C[按内容去重的 Base64 资源池]
-  A --> D[JSON 中保存的五个分馆 HTML]
-  B --> E[进入分馆时创建 iframe.srcdoc]
+  A["单个离线 HTML"] --> B["主馆 DOM / CSS / JavaScript"]
+  A --> C["按内容去重的 Base64 资源池"]
+  A --> D["JSON 中保存的五个分馆 HTML"]
+  B --> E["进入分馆时创建 iframe.srcdoc"]
   E --> D
-  B --> F[共享资源解析器]
+  B --> F["共享资源解析器"]
   E --> F
   F --> C
-  F --> G[按需解码 / Blob URL 缓存]
-  G --> H[图片 / WebGL 纹理 / 字体 / 音视频]
-  B --> I[localStorage]
-  E --> J[localStorage / IndexedDB]
+  F --> G["按需解码 / Blob URL 缓存"]
+  G --> H["图片 / WebGL 纹理 / 字体 / 音视频"]
+  B --> I["localStorage"]
+  E --> J["localStorage / IndexedDB"]
 ```
 
 主页面与 iframe 之间使用 `postMessage` 传递返回或切换分馆的请求；接收端核对消息是否来自当前分馆 iframe。应用代码、Three.js 等依赖都已打包进页面，不从外部 CDN 加载脚本。
@@ -117,12 +137,12 @@ URL 解析统一处理相对路径、HTML 实体和中文文件名的百分号�
 
 ```text
 README.md                         使用说明与技术原理
-奶蛙博物馆.html                   约 5 MB 的联网媒体版本
+奶蛙博物馆.html.gz                联网媒体版的 gzip 快照，解压约 5 MB
 reconstruction/
   build-museum.py                 构建主馆与嵌入分馆
   build-factory.mjs               Rollup 打包制造所
   local-museum.js / .css          本机互动与界面补充
-  branches/*.html                五个已打包的独立分馆
+  branches/*.html / *.html.gz    五个已打包的独立分馆快照
   factory/*.mjs                  制造所可编辑模块
 analysis/
   奶蛙博物馆-全站分析报告.md      原站结构与实现分析
@@ -143,7 +163,7 @@ offline/
 docs/images/                     实际离线页面截图
 ```
 
-缓存、无损转换输出、巨大的完整采集记录和重复构建文件由 `.gitignore` 排除。离线 HTML 通过 Release 分发，避免将 582 MB 文件写入 Git 历史；[GitHub 普通 Git 文件限制为 100 MiB](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github)。完整的本机调查工作区还保留未提交的原始记录。
+缓存、无损转换输出、巨大的完整采集记录和重复构建文件由 `.gitignore` 排除。582 MB 的离线 HTML 仅保存在本机，未发布 Release，也不写入 Git 历史；[GitHub 普通 Git 文件限制为 100 MiB](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github)。完整的本机调查工作区还保留未提交的原始记录。
 
 ## 重新构建
 
